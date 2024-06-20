@@ -1,41 +1,42 @@
-# Ashray: AI mental health advice Assistant 📘
+# Ashray: AI Mental Health Advice Assistant 🧠💬
 
-BharatLAW is a sophisticated legal advisory chatbot focused on providing detailed and contextually accurate responses about the Indian Penal Code. It utilizes a powerful combination of machine learning technologies to efficiently process and retrieve legal information.
+Ashray is an advanced mental health advisory chatbot designed to provide empathetic, contextually appropriate responses to mental health queries. It leverages cutting-edge machine learning technologies to process and retrieve mental health information effectively.
 
 ---
 
 ## Features 🌟
 
-- **Document Ingestion**: Automated processing of text documents to store legal information in a FAISS vector database.
-- **Real-Time Interaction**: Real-time legal advice through a conversational interface built with Streamlit.
-- **Legal Prompt Templating**: Structured prompt format ensuring clarity, detail, and legal accuracy in responses.
+- **Knowledge Base Integration**: Automated processing of mental health resources to build a comprehensive knowledge base.
+- **Real-Time Support**: Instant mental health guidance through a user-friendly conversational interface built with Streamlit.
+- **Empathetic Response Templating**: Structured prompt format ensuring compassionate, detailed, and accurate responses to mental health concerns.
+
 <br>
 
 ---
 
-<h4><strong>🚀Blast off to discovery! Our project is waiting for you <a href= "https://huggingface.co/spaces/nik-one/BharatLAW-IPC_legal_guidance">BharatLAW</a>. Explore it today and elevate your understanding!🌟</strong><h4>
+<h4><strong>🚀 Discover peace of mind! Explore Ashray <a href="https://huggingface.co/spaces/thegovindkrishna/Ashray">here</a>. Start your journey to better mental health today! 🌈</strong></h4>
 <br>
-   
+
 ---
 
 ## Components 🛠️
 
-### Ingestion Script (`Ingest.py`)
+### Knowledge Base Builder (`build_knowledge.py`)
 
-| Functionality        | Description |
-|----------------------|-------------|
-| **Document Loading** | Loads text documents from a specified directory. |
-| **Text Splitting**   | Splits documents into manageable chunks for processing. |
-| **Embedding Generation** | Utilizes `HuggingFace's InLegalBERT` to generate text embeddings. |
-| **FAISS Database**   | Indexes embeddings for fast and efficient retrieval. |
+| Functionality | Description |
+|---------------|-------------|
+| **Resource Loading** | Imports mental health information from various sources. |
+| **Text Processing** | Breaks down resources into manageable, topic-specific segments. |
+| **Embedding Creation** | Uses advanced NLP models to generate text embeddings. |
+| **Vector Database** | Indexes embeddings for quick and efficient information retrieval. |
 
 ### Web Application (`app.py`)
 
-| Feature               | Description |
-|-----------------------|-------------|
-| **Streamlit Interface** | Provides a web interface for user interaction. |
-| **Chat Functionality**  | Manages conversational flow and stores chat history. |
-| **Legal Information Retrieval** | Leverages FAISS index to fetch pertinent legal information based on queries. 
+| Feature | Description |
+|---------|-------------|
+| **Streamlit Interface** | Offers a welcoming web interface for user interaction. |
+| **Conversation Management** | Handles chat flow and maintains conversation history. |
+| **Information Retrieval** | Utilizes the knowledge base to fetch relevant mental health information. |
 
 ---
 
@@ -44,52 +45,81 @@ BharatLAW is a sophisticated legal advisory chatbot focused on providing detaile
 ### Prerequisites
 
 - Python 3.8 or later
-- ray
 - langchain
 - streamlit
-- faiss
+- faiss-cpu
+- transformers
 
 ### Installation
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-repo/BharatLAW.git
-   cd BharatLAW
+   git clone https://github.com/thegovindkrishna/Ashray.git
+   cd Ashray
    ```
+
 2. **Install dependencies:**
    ```bash
-    pip install -r requirements.txt
+   pip install -r requirements.txt
    ```
-3. **Set up the Together AI API Key:**
-Obtain an API key from <a href="https://api.together.xyz/">Together AI</a>.&nbsp;
-Sign up with Together AI today and get $25 worth of free credit! 🎉 Whether you choose to use it for a short-term project or opt for a long-term commitment, Together AI offers cost-effective solutions compared to the OpenAI API. 🚀&nbsp;<br><br>
-**> To set this API key as an environment variable on any OS, you can use the following approach:**
-  - On macOS and Linux:
-    ```bash
-    echo "export TOGETHER_API_KEY='Your-API-Key-Here'" >> ~/.bash_profile
-    source ~/.bash_profile
-    ```
-  - On Windows (using Command Prompt):
-    ```cmd
-    setx TOGETHER_API_KEY "Your-API-Key-Here"
-    ```
-  - On Windows (using PowerShell):
-    ```powershell
-    [Environment]::SetEnvironmentVariable("TOGETHER_API_KEY", "Your-API-Key-Here", "User")
-    ```
-This key is crucial for the chatbot to access language model functionalities provided by Together AI.
+
+3. **Set up the AI model API Key:**
+   Obtain an API key from your chosen AI model provider (e.g., OpenAI, Anthropic).
+
+   Set the API key as an environment variable:
+   
+   - On macOS and Linux:
+     ```bash
+     echo "export AI_MODEL_API_KEY='Your-API-Key-Here'" >> ~/.bash_profile
+     source ~/.bash_profile
+     ```
+   - On Windows (Command Prompt):
+     ```cmd
+     setx AI_MODEL_API_KEY "Your-API-Key-Here"
+     ```
+   - On Windows (PowerShell):
+     ```powershell
+     [Environment]::SetEnvironmentVariable("AI_MODEL_API_KEY", "Your-API-Key-Here", "User")
+     ```
 
 ## Running the Application
-1. **Run the ingestion script to prepare the data:**
-    ```bash
-    python ingest.py
-    ```
-2. Launch the Streamlit application:
+
+1. **Build the knowledge base:**
+   ```bash
+   python build_knowledge.py
+   ```
+
+2. **Launch the Streamlit application:**
    ```bash
    streamlit run app.py
    ```
+
 ---
 
-## Usage 🔍
+## Usage 🤝
 
-Navigate to the local URL provided by Streamlit to interact with the BharatLAW chatbot. Enter your legal queries and receive precise information derived from the indexed legal documents. Utilize the chat interface to engage in a legal discussion and get accurate advice.<br>
+Navigate to the local URL provided by Streamlit to interact with Ashray. Share your mental health concerns or questions, and receive compassionate, informed responses based on the integrated mental health resources. Use the chat interface to engage in supportive conversations and gain valuable mental health insights.
+
+---
+
+## Disclaimer ⚠️
+
+Ashray is an AI assistant designed to provide general mental health information and support. It is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the guidance of qualified health providers for any mental health concerns.
+
+---
+
+## Contributing 🤝
+
+We welcome contributions to improve Ashray! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to submit issues, feature requests, and code changes.
+
+---
+
+## License 📄
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+---
+
+<p align="center">Made with ❤️ for better mental health</p>
+
+I've adapted the README to focus on Ashray as a mental health assistant chatbot. The structure remains similar, but I've updated the content to reflect the mental health focus, changed some component names, and added a disclaimer about the limitations of AI in providing mental health advice. You may want to further customize this README based on the specific features and implementation details of your Ashray chatbot.
