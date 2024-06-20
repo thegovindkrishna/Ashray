@@ -122,4 +122,3 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 <p align="center">Made with ❤️ for better mental health</p>
 
-I've adapted the README to focus on Ashray as a mental health assistant chatbot. The structure remains similar, but I've updated the content to reflect the mental health focus, changed some component names, and added a disclaimer about the limitations of AI in providing mental health advice. You may want to further customize this README based on the specific features and implementation details of your Ashray chatbot.
