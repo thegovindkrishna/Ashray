@@ -1,5 +1,4 @@
 langchain==0.1.15
-pypdf
 transformers==4.39.3
 sentence-transformers
 accelerate
@@ -8,6 +7,5 @@ streamlit==1.33.0
 langchain-fireworks
 einops
 langchain-together
-unstructured
 htbuilder
 python-dotenv

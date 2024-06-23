@@ -10,6 +10,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.chains import ConversationalRetrievalChain
+from streamlit import cache_data
 
 st.set_page_config(page_title="ASHRAY - Mental Health Assistant", page_icon=":brain:")
 
@@ -69,6 +70,7 @@ if "conversation" not in st.session_state:
 if "greeting_sent" not in st.session_state:
     st.session_state.greeting_sent = False
 
+@cache_data
 def load_csv_data(file_path):
     df = pd.read_csv(file_path)
     
