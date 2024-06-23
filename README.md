@@ -91,7 +91,7 @@ Ashray is an advanced mental health advisory chatbot designed to provide empathe
 
 2. **Launch the Streamlit application:**
    ```bash
-   streamlit run app.py
+   streamlit run ap.py
    ```
 
 ---
