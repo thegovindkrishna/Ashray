@@ -10,4 +10,4 @@ einops
 langchain-together
 unstructured
 htbuilder
-dotenv 
+python-dotenv
