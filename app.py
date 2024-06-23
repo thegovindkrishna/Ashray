@@ -16,7 +16,7 @@ st.set_page_config(page_title="ASHRAY - Mental Health Assistant", page_icon=":br
 
 # Load environment variables
 load_dotenv()
-api_key = os.getenv('OPENAI_API_KEY')
+api_key = os.getenv(st.secrets['OPENAI_API_KEY'])
 
 # Set up Streamlit page configuration
 # Custom CSS to make it look more like ChatGPT
