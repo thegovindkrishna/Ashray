@@ -1,42 +1,29 @@
 import time
 # Imports the time module for adding delays
-
 from dotenv import load_dotenv
 # Imports the load_dotenv function to load environment variables from a .env file
-
 import os
 # Imports the os module for interacting with the operating system
-
 import streamlit as st
 # Imports the Streamlit library for creating web apps
-
 from langchain_community.vectorstores import FAISS
 # Imports FAISS vector store from LangChain for efficient similarity search
-
 from langchain_community.embeddings import HuggingFaceEmbeddings
 # Imports HuggingFaceEmbeddings for text embeddings
-
 from langchain.prompts import PromptTemplate
 # Imports PromptTemplate for creating customizable prompts
-
 from langchain.memory import ConversationBufferWindowMemory
 # Imports ConversationBufferWindowMemory for maintaining conversation history
-
 from langchain.chains import ConversationalRetrievalChain
 # Imports ConversationalRetrievalChain for creating a conversational AI system
-
 from langchain.chat_models import ChatOpenAI
 # Imports ChatOpenAI for interfacing with OpenAI's chat models
-
 load_dotenv()
 # Loads environment variables from a .env file
-
 from footer import footer
 # Imports a custom footer function
-
 st.set_page_config(page_title="Law-GPT", layout="centered")
 # Sets up the Streamlit page configuration
-
 col1, col2, col3 = st.columns([1, 30, 1])
 with col2:
     st.image("images/banner.png", use_column_width=True)
@@ -54,6 +41,25 @@ def hide_hamburger_menu():
 hide_hamburger_menu()
 # Calls the function to hide the menu and footer
 
+@st.cache_resource
+def load_embeddings():
+    """Load and cache the embeddings model."""
+    return HuggingFaceEmbeddings(model_name="law-ai/InLegalBERT")
+
+# Load the embeddings
+embeddings = load_embeddings()
+
+@st.cache_resource
+def load_vector_store():
+    """Load and cache the vector store."""
+    return FAISS.load_local("ipc_embed_db", embeddings, allow_dangerous_deserialization=True)
+
+# Load the vector store
+db = load_vector_store()
+
+# Create the retriever
+db_retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 3})
+# ... (in the main logic)
 # Initialize session state for messages and memory
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -65,20 +71,20 @@ if "memory" not in st.session_state:
     st.session_state.memory = ConversationBufferWindowMemory(k=2, memory_key="chat_history", return_messages=True)
 # Initializes conversation memory in the session state
 
-@st.cache_resource
-def load_embeddings():
-    """Load and cache the embeddings model."""
-    return HuggingFaceEmbeddings(model_name="law-ai/InLegalBERT")
-# Defines a function to load and cache the embeddings model
+result = qa.invoke(input=input_prompt)
+message_placeholder = st.empty()
+answer = extract_answer(result["answer"])
 
-embeddings = load_embeddings()
-# Loads the embeddings model
-
-db = FAISS.load_local("ipc_embed_db", embeddings, allow_dangerous_deserialization=True)
-# Loads a local FAISS database with the embeddings
-
-db_retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 3})
-# Creates a retriever from the database for similarity search
+full_response = "⚠️ **_Gentle reminder: Do seek professional help if needed ,i am in no way an alternative for a professional._.** \n\n\n"
+print(answer)
+if answer:  # Add this check
+    for chunk in answer.split():  # Split the answer into words
+        full_response += chunk + " "
+        time.sleep(0.0001)
+        message_placeholder.markdown(full_response + " |", unsafe_allow_html=True)
+else:
+    full_response += "I'm sorry, I couldn't generate a response. Please try again."
+    message_placeholder.markdown(full_response, unsafe_allow_html=True)
 
 # Prompt templates for different sections
 mental_health_assistant_prompt = """
@@ -143,16 +149,16 @@ def initialize_qa(section):
         retriever=db_retriever,
         combine_docs_chain_kwargs={'prompt': prompt}
     )
-
 api_key = os.getenv('OPEN_API_KEY')
 # Retrieves the OpenAI API key from environment variables
 
 llm = ChatOpenAI(api_key=api_key, model_name="gpt-3.5-turbo", temperature=0.5, max_tokens=1024)
 # Initializes the ChatOpenAI model with specific parameters
-
 def extract_answer(full_response):
     """Extracts the answer from the LLM's full response by removing the instructional text."""
-    # Function to extract the actual answer from the model's response
+    # For now, let's just return the full response
+    return full_response
+
 
 def reset_conversation():
     # Function to reset the conversation state
@@ -164,9 +170,10 @@ def reset_conversation():
 # Display initial prompt for section choice
 if st.session_state.initial_prompt:
     with st.chat_message("assistant"):
-        st.markdown("**Please choose an option to begin:**\n\n1. Therapy Session \n2. Dumb questions")
+        st.markdown("**Please choose an option to begin:**\n\n1. Therapy Session \n2. Councelling Session")
     st.session_state.initial_prompt = False
 
+# Handle user's choice
 # Handle user's choice
 if st.session_state.section is None:
     input_prompt = st.chat_input("Choose an option (1 or 2):")
@@ -186,7 +193,9 @@ if st.session_state.section is None:
             st.write(message["content"])
 
 else:
+    # Initialize qa here, after the section has been chosen
     qa = initialize_qa(st.session_state.section)
+
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.write(message["content"])
@@ -200,10 +209,12 @@ else:
         with st.chat_message("assistant"):
             with st.spinner("Thinking 💡..."):
                 result = qa.invoke(input=input_prompt)
+                # ... rest of your code ...
                 message_placeholder = st.empty()
                 answer = extract_answer(result["answer"])
 
-                full_response = "⚠️ **_Gentle reminder: Do seek professional help ,i am in no way an alternative for a professional._.** \n\n\n"
+                full_response = "⚠️ **_Gentle reminder: Do seek professional help if needed ,i am in no way an alternative for a professional._.** \n\n\n"
+                print(answer)
                 for chunk in answer:
                     full_response += chunk
                     time.sleep(0.0001)
@@ -212,8 +223,6 @@ else:
             st.session_state.messages.append({"role": "assistant", "content": answer})
 
             if st.button('🗑️ Reset All Chat', on_click=reset_conversation):
-               
 
                 st.experimental_rerun()
-
 footer()
